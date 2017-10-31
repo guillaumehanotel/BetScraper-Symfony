@@ -99,7 +99,14 @@ function getEquipesFromMatchCrawler(\Symfony\Component\DomCrawler\Crawler $crawl
 }
 
 
+function getCotesFromMatchCrawler(\Symfony\Component\DomCrawler\Crawler $crawler, $nodeHtml){
+    $cssSelectorCotes = '.match-odds .match-odd span';
+    return $crawler->filter($cssSelectorCotes)->each($nodeHtml);
+}
 
 
-
+function getIdFromEventCrawler(\Symfony\Component\DomCrawler\Crawler $crawler, $nodeId){
+    $cssMatch = $GLOBALS['config']['css1Match'];
+    return $crawler->filter($cssMatch)->each($nodeId);
+}
 

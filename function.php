@@ -1,5 +1,7 @@
 <?php
 
+
+
 /**
  * Fonction prenant en paramètre un nombre de jour,
  * Retourne une liste d'objets DateTime concernant les dates
@@ -66,5 +68,7 @@ function get_html_content($url) {
     curl_close($curl_handle);
     return $html;
 }
+
+
 
 

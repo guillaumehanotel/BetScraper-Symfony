@@ -15,3 +15,10 @@ $GLOBALS['config'] = [
     'cssCalendrier_1_Event' => $cssCalendrier_1_Event,
     'css1Match' => $css1Match
 ];
+
+$GLOBALS['bdd'] = [
+    'login' => 'root',
+    'mdp' => '',
+    'base' => 'betscrap'
+];
+

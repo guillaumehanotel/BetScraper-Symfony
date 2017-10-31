@@ -1,13 +1,6 @@
 <?php
 
-ini_set('display_errors', 2);
-
-require_once __DIR__.'/vendor/autoload.php';
-
-require_once  __DIR__.'/function.php';
-require_once  __DIR__.'/crawler_function.php';
-
-
+require_once  __DIR__ . '/load.php';
 
 
 // Récupère les dates des 3 prochains jours
@@ -18,13 +11,12 @@ $urls = get_urls_from_dates($dates);
 
 $nodeText = function ($node) {
     return $node->text();
-    //return preg_replace('/\s+/', '', $node->text());
-    //return $node->attr('class')
 };
-
 $nodeHtml = function ($node) {
     return $node->html();
-    //return htmlentities($node->html());
+};
+$nodeId = function ($node) {
+    return $node->attr('id');
 };
 
 /*
@@ -94,7 +86,10 @@ foreach ($horaires_html as $horaire_html){
 
         echo "<p style='text-decoration: underline'>".$event_sport." : ".$event_name."</p>";
 
+        $match_ids = getIdFromEventCrawler($event_crawler, $nodeId);
         $matchs_html = getMatchsContent($event_crawler, $nodeHtml);
+
+        $nb_match = 0;
 
         foreach ($matchs_html as $match_html){
 
@@ -102,12 +97,49 @@ foreach ($horaires_html as $horaire_html){
             $match_crawler->addHtmlContent($match_html, 'UTF-8');
 
             $match_equipes = getEquipesFromMatchCrawler($match_crawler);
+            $match_cotes = getCotesFromMatchCrawler($match_crawler, $nodeHtml);
+            $match_id = explode('_', $match_ids[$nb_match])[1];
+
+
             $match_equipe_1 = explode(' - ', $match_equipes)[0];
             $match_equipe_2 = explode(' - ', $match_equipes)[1];
 
+            if(count($match_cotes) == 2){
+                $match_cote_equipe_1 = $match_cotes[0];
+                $match_cote_nul = "";
+                $match_cote_equipe_2 = $match_cotes[1];
+            } elseif (count($match_cotes) == 3) {
+                $match_cote_equipe_1 = $match_cotes[0];
+                $match_cote_nul = $match_cotes[1];
+                $match_cote_equipe_2 = $match_cotes[2];
+            } else {
+                $match_cote_equipe_1 = "";
+                $match_cote_nul = "Pariez !";
+                $match_cote_equipe_2 = "";
+            }
+
+
+
+            echo "ID : ".$match_id;
             echo "<p> - ".$match_equipe_1." VS ".$match_equipe_2."</p>";
 
+            echo "<table style='border: black solid 1px'>";
+            echo "<tr>";
+            echo "<th>Cote Equipe 1</th>";
+            echo "<th>Cote Nul</th>";
+            echo "<th>Cote Equipe 2</th>";
+            echo "</tr>";
 
+            echo "<tr>";
+            echo "<td>".$match_cote_equipe_1."</td>";
+            echo "<td>".$match_cote_nul."</td>";
+            echo "<td>".$match_cote_equipe_2."</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            //echo "<p>".$match_cote_equipe_1." ".$match_cote_nul." ".$match_cote_equipe_2."</p>";
+
+            $nb_match++;
 
         }
 
@@ -117,8 +149,13 @@ foreach ($horaires_html as $horaire_html){
 
 
 
-
-
+echo "<style>
+table , th, td{
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+ }
+</style>";
 
 
 
