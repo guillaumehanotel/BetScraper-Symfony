@@ -1,0 +1,13 @@
+{
+    "name": "guillaumeh/bet-scrap",
+    "authors": [
+        {
+            "name": "Guillaume Hanotel",
+            "email": "guillaumehanotel@orange.fr"
+        }
+    ],
+    "require": {
+        "symfony/dom-crawler": "^3.3",
+        "symfony/css-selector": "^3.3"
+    }
+}
