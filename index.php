@@ -107,32 +107,13 @@ foreach ($horaires_html as $horaire_html){
 
             echo "<p> - ".$match_equipe_1." VS ".$match_equipe_2."</p>";
 
-            /*
-            foreach (str_split($match_equipes) as $letter){
-                echo htmlspecialchars($letter)." : ".ord($letter);
-                echo "<br>";
-            }*/
 
-
-            /*
-            echo "&#246;";
-            echo "ö";
-            */
 
         }
 
 
     }
 }
-
-//var_dump($horaires_html);
-
-
-/*
-var_dump($urls[0]);
-var_dump($content_date);
-var_dump(htmlspecialchars($html_day->html()));
-*/
 
 
 
