@@ -1,5 +1,6 @@
 <?php
 
+date_default_timezone_set('Europe/Paris');
 
 $cssMatch_Non_En_Cours = "#cal-wrapper-prelive";
 $cssCalendrier_1_Jour = ".cal-day-entry";
