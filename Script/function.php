@@ -69,6 +69,12 @@ function get_html_content($url) {
     return $html;
 }
 
+/**
+ * Prend en paramètre un mois en string
+ * Retourne le nb de ce mois
+ * @param $mois_str
+ * @return int
+ */
 function getMoisNum($mois_str){
     switch ($mois_str){
         case "Janvier" : return 1;
@@ -86,6 +92,12 @@ function getMoisNum($mois_str){
     }
 }
 
+/**
+ * Prend en paramètre une date en string
+ * Retourne cette date sous forme de tableau
+ * @param $date_txt
+ * @return array
+ */
 function getDateArray($date_txt){
     $explode_date = explode(" ", $date_txt);
     $jour = $explode_date[1];
@@ -149,7 +161,14 @@ function printErrorInfo(PDO $bdd, $requete, $bdd_error) {
     , "</table>";
 }
 
-
+/**
+ * Prend en paramètre une requete préparée et ses paramètre
+ * Execute cette requete et retourne ses résultats
+ * @param PDO $bdd
+ * @param PDOStatement $requete
+ * @param array $param
+ * @return array
+ */
 function getResultatsRequete(PDO $bdd, PDOStatement $requete, array $param) {
     $reponse_requete = $requete->execute($param);
     if ($reponse_requete) {
@@ -258,6 +277,12 @@ function insertEquipe(PDO $bdd, string $equipe_name){
     return $equipe_id;
 }
 
+/**
+ * Requete sur l'id du match passé en paramètre
+ * @param PDO $bdd
+ * @param $match_id
+ * @return array|null
+ */
 function getMatchById(PDO $bdd, $match_id){
     $requete = $bdd->prepare("SELECT * FROM sp_match WHERE `match_id` = :match_id");
     $param = [
@@ -267,7 +292,15 @@ function getMatchById(PDO $bdd, $match_id){
     return !empty($match) ? $match : null;
 }
 
-
+/**
+ * Insert un match en BDD si il n'exsiste pas déjà
+ * @param PDO $bdd
+ * @param $match_id
+ * @param $match_date
+ * @param $sport_id
+ * @param $equipe1_id
+ * @param $equipe2_id
+ */
 function insertMatch(PDO $bdd, $match_id, $match_date, $sport_id, $equipe1_id, $equipe2_id){
     $match = getMatchById($bdd, $match_id);
     if(is_null($match)){
@@ -284,8 +317,13 @@ function insertMatch(PDO $bdd, $match_id, $match_date, $sport_id, $equipe1_id, $
     }
 }
 
-
-
+/**
+ * Recupère la cote d'un match en fonction de l'id et de la date du match passée en paramètre
+ * @param PDO $bdd
+ * @param $match_id
+ * @param $date_today
+ * @return array|null
+ */
 function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
     $requete = $bdd->prepare("SELECT * FROM cote WHERE match_id = :match_id AND cote_date = :date_today");
     $param = [
@@ -296,13 +334,21 @@ function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
     return !empty($cote) ? $cote : null;
 }
 
-
+/**
+ * Insert la cote d'un match en BDD si elle n'existe pas déjà
+ * @param PDO $bdd
+ * @param $match_id
+ * @param $match_cote_equipe_1
+ * @param $match_cote_equipe_2
+ * @param $match_cote_nul
+ * @param $date_today
+ */
 function insertCote(PDO $bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today){
     $cote = getCoteByMatchIdAndDate($bdd, $match_id, $date_today);
     if (is_null($cote)){
         $requete = $bdd->prepare("INSERT INTO cote (cote_date, cote_equipe1, cote_equipe2, cote_nul, match_id) 
                                                     VALUES (:cote_date, :cote_equipe1, :cote_equipe2, :cote_nul, :match_id)");
-        
+
         $param = [
           'cote_date' => $date_today,
           'cote_equipe1' => str_replace(',','.', $match_cote_equipe_1),

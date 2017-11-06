@@ -98,13 +98,25 @@ function getEquipesFromMatchCrawler(\Symfony\Component\DomCrawler\Crawler $crawl
     return $crawler->filter($cssSelectorEquipes)->text();
 }
 
-
+/**
+ * Prend en paramètre le crawler d'un match et une closure retournant le html de chaque html de chaque élément
+ * Retourne un tableau de string contenant le html des cotes du match
+ * @param \Symfony\Component\DomCrawler\Crawler $crawler
+ * @param $nodeHtml
+ * @return array
+ */
 function getCotesFromMatchCrawler(\Symfony\Component\DomCrawler\Crawler $crawler, $nodeHtml){
     $cssSelectorCotes = '.match-odds .match-odd span';
     return $crawler->filter($cssSelectorCotes)->each($nodeHtml);
 }
 
-
+/**
+ * Prend en paramètre le crawler d'un event
+ * Retourne un tableau de string contenant l'id de tous des matchs de cet event
+ * @param \Symfony\Component\DomCrawler\Crawler $crawler
+ * @param $nodeId
+ * @return array
+ */
 function getIdFromEventCrawler(\Symfony\Component\DomCrawler\Crawler $crawler, $nodeId){
     $cssMatch = $GLOBALS['config']['css1Match'];
     return $crawler->filter($cssMatch)->each($nodeId);
