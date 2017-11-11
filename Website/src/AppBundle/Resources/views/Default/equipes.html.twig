@@ -1,0 +1,17 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block main %}
+    <h2 class="center">Equipes</h2>
+
+    <div class="equipes">
+        <div class="row">
+            {% for equipe in equipes|sort %}
+                <div class="equipe col m3">
+                    <p>{{ equipe.equipenom }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

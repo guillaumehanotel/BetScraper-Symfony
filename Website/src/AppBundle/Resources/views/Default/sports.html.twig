@@ -1,0 +1,17 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block main %}
+    <h2 class="center">Sports</h2>
+
+    <div class="sports row">
+        <ul class="collection sports-collection col m5">
+            {% for sport in sports %}
+                <li class="collection-item">{{ sport.sportnom }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+{% endblock %}

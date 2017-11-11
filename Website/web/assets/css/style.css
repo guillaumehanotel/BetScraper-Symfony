@@ -1,0 +1,51 @@
+
+h1 {
+   margin: 0;
+}
+
+.equipes p {
+   margin: 0;
+}
+
+.divider {
+   margin-bottom: 60px;
+}
+
+.matchs h3, h4 {
+   padding-top: 50px;
+}
+
+
+.matchs .match {
+    border: solid black 1px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-bottom: 10px;
+   // margin-left: 2px;
+}
+
+.match p {
+    margin: 0px;
+
+}
+
+.match .match-date {
+    width: 50%;
+    float: right;
+    text-align: center;
+    height: 30px;
+}
+
+.match .match-sport {
+    width: 50%;
+    float: left;
+    text-align: center;
+    height: 30px;
+}
+
+
+.match .match-equipe {
+    clear: both;
+    border-top: solid black 1px;
+    text-align: center;
+}

@@ -139,12 +139,16 @@ foreach ($urls as $url) {
 
                 }
 
+                $td_match_cote_equipe_1 = ($match_cote_equipe_1 >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_equipe_1 . "</td>" : "<td>" . $match_cote_equipe_1 . "</td>";
+                $td_match_cote_equipe_2 = ($match_cote_equipe_2 >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_equipe_2 . "</td>" : "<td>" . $match_cote_equipe_2 . "</td>";
+                $td_match_cote_nul = ($match_cote_nul >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_nul . "</td>" : "<td>" . $match_cote_nul . "</td>";
+
                 echo "ID : " . $match_id;
                 echo "<p> - " . $match_equipe_1 . " VS " . $match_equipe_2 . "</p>";
 
                 echo "<table style='border: black solid 1px'>";
                 echo "<tr><th>Cote Equipe 1</th><th>Cote Nul</th><th>Cote Equipe 2</th></tr>";
-                echo "<tr><td>" . $match_cote_equipe_1 . "</td><td>" . $match_cote_nul . "</td><td>" . $match_cote_equipe_2 . "</td></tr>";
+                echo "<tr>". $td_match_cote_equipe_1 .$td_match_cote_nul.$td_match_cote_equipe_2."</tr>";
                 echo "</table>";
 
                 $nb_match++;

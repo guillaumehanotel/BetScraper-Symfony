@@ -1,0 +1,54 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block main %}
+    <h2 class="center">Accueil</h2>
+
+    <h2 class="center">Matchs</h2>
+
+
+    <div class="matchs">
+        <div class="row">
+            {% set date_day = null %}
+            {% set date_hour = null %}
+            <!-- Parcourt des matchs d'aujourd'hui et d'après triés par date -->
+            {% for match in matchs %}
+
+                <!-- Affichage groupé par jour -->
+                {% if date_day != match.matchdate|date("l d F Y") %}
+                    {% set date_day = match.matchdate|date("l d F Y") %}
+                    <div class="date_day" style="clear: both">
+                        <h3>{{ date_day }}</h3>
+                    </div>
+                    <div class="divider"></div>
+                {% endif %}
+
+                <!-- Affichage groupé par horaire -->
+                {% if date_hour != match.matchdate|date("H:i") %}
+                    {% set date_hour = match.matchdate|date("H:i") %}
+                    <div class="date_hour" style="clear: both">
+                        <h4>{{ date_hour }}</h4>
+                    </div>
+                    <div class="divider"></div>
+                {% endif %}
+
+
+                <div class="match col m6">
+                    <div class="match-date">
+                        <p>{{ match.matchdate|date("d/m/Y H:i") }}</p>
+                    </div>
+                    <div class="match-sport">
+                        <p style="font-weight: bold">{{ match.sport.sportnom }}</p>
+                    </div>
+                    <div class="match-equipe">
+                        <p><span class="red-text">{{ match.equipe1.equipenom }}</span> vs <span class="blue-text">{{ match.equipe2.equipenom }}</span></p>
+                    </div>
+                </div>
+
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+{% endblock %}

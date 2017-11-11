@@ -247,7 +247,7 @@ function getEquipeByName(PDO $bdd, $equipe_name){
                 FROM equipe
                 WHERE equipe_nom = :equipe_name");
     $param = [
-        'equipe_name' => $equipe_name
+        'equipe_name' => (strpos($equipe_name, 'É')) ? str_replace('É', 'E', $equipe_name) : $equipe_name
     ];
     $equipe = getResultatsRequete($bdd, $requete, $param);
     return !empty($equipe) ? $equipe : null;
