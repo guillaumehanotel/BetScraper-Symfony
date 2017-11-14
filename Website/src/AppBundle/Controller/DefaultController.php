@@ -20,14 +20,12 @@ class DefaultController extends Controller {
         $doctrine = $this->getDoctrine();
         $entityManager = $doctrine->getManager();
 
-        $matchRepository = $doctrine->getRepository(SpMatch::class);
         $coteRepository = $doctrine->getRepository(Cote::class);
 
-        $matchs = $matchRepository->findAllFromToday();
-        $cotes = $coteRepository->findAll();
+        //$cotes = $coteRepository->findAll();
+        $cotes = $coteRepository->findAllRecentCote();
 
         return $this->render('AppBundle:Default:index.html.twig', [
-            'matchs' => $matchs,
             'cotes' => $cotes
         ]);
     }
@@ -67,6 +65,22 @@ class DefaultController extends Controller {
 
     }
 
+    /**
+     * @Route("/matchs", name="list_matchs")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewMatchAction(Request $request){
+
+        $doctrine = $this->getDoctrine();
+        $entityManager = $doctrine->getManager();
+        $equipeRepository = $doctrine->getRepository(SpMatch::class);
+        $matchs = $equipeRepository->findAllFromToday();
+        return $this->render('AppBundle:Default:matchs.html.twig', [
+            'matchs' => $matchs,
+        ]);
+
+    }
 
 
 

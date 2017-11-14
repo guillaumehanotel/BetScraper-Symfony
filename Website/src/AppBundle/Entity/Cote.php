@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Cote
  *
  * @ORM\Table(name="cote", indexes={@ORM\Index(name="FK_cote_match_id", columns={"match_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CoteRepository")
  */
 class Cote {
     /**
@@ -141,8 +141,6 @@ class Cote {
     public function setMatch(SpMatch $match) {
         $this->match = $match;
     }
-
-
 
 
 }

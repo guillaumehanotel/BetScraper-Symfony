@@ -127,7 +127,9 @@ class SpMatch {
         $this->sport = $sport;
     }
 
-
+    public function __toString() {
+        return (string)$this->matchId;
+    }
 
 
 }

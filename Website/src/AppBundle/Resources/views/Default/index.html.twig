@@ -3,19 +3,19 @@
 {% block main %}
     <h2 class="center">Accueil</h2>
 
-    <h2 class="center">Matchs</h2>
-
+    <h2 class="center">Matchs avec cotes</h2>
 
     <div class="matchs">
         <div class="row">
+
             {% set date_day = null %}
             {% set date_hour = null %}
             <!-- Parcourt des matchs d'aujourd'hui et d'après triés par date -->
-            {% for match in matchs %}
+            {% for cote in cotes %}
 
                 <!-- Affichage groupé par jour -->
-                {% if date_day != match.matchdate|date("l d F Y") %}
-                    {% set date_day = match.matchdate|date("l d F Y") %}
+                {% if date_day != cote.match.matchdate|date("l d F Y") %}
+                    {% set date_day = cote.match.matchdate|date("l d F Y") %}
                     <div class="date_day" style="clear: both">
                         <h3>{{ date_day }}</h3>
                     </div>
@@ -23,8 +23,8 @@
                 {% endif %}
 
                 <!-- Affichage groupé par horaire -->
-                {% if date_hour != match.matchdate|date("H:i") %}
-                    {% set date_hour = match.matchdate|date("H:i") %}
+                {% if date_hour != cote.match.matchdate|date("H:i") %}
+                    {% set date_hour = cote.match.matchdate|date("H:i") %}
                     <div class="date_hour" style="clear: both">
                         <h4>{{ date_hour }}</h4>
                     </div>
@@ -34,20 +34,30 @@
 
                 <div class="match col m6">
                     <div class="match-date">
-                        <p>{{ match.matchdate|date("d/m/Y H:i") }}</p>
+                        <p>{{ cote.match.matchdate|date("d/m/Y H:i") }}</p>
                     </div>
                     <div class="match-sport">
-                        <p style="font-weight: bold">{{ match.sport.sportnom }}</p>
+                        <p style="font-weight: bold">{{ cote.match.sport.sportnom }}</p>
                     </div>
-                    <div class="match-equipe">
-                        <p><span class="red-text">{{ match.equipe1.equipenom }}</span> vs <span class="blue-text">{{ match.equipe2.equipenom }}</span></p>
-                    </div>
+                    <table class="bordered striped">
+                        <tr>
+                            <td><span class="red-text">{{ cote.match.equipe1.equipenom }}</span></td>
+                            <td></td>
+                            <td><span class="blue-text">{{ cote.match.equipe2.equipenom }}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="red-text">{{ cote.coteEquipe1 }}</span></td>
+                            <td><span class="black-text">{{ cote.coteNul }}</span></td>
+                            <td><span class="blue-text">{{ cote.coteEquipe2 }}</span></td>
+                        </tr>
+                    </table>
+
+
                 </div>
-
-
             {% endfor %}
         </div>
     </div>
+
 
 
 
