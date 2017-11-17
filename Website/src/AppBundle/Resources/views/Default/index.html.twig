@@ -32,28 +32,30 @@
                 {% endif %}
 
 
-                <div class="match col m6">
-                    <div class="match-date">
-                        <p>{{ cote.match.matchdate|date("d/m/Y H:i") }}</p>
+                <a class="hoverable" href="{{ path("match", {'matchId': cote.match.matchId }) }}">
+                    <div class="match hoverable offset-m1 col m5">
+                        <div class="match-date">
+                            <p class="black-text">{{ cote.match.matchdate|date("d/m/Y H:i") }}</p>
+                        </div>
+                        <div class="match-sport">
+                            <p class="black-text" style="font-weight: bold">{{ cote.match.sport.sportnom }}</p>
+                        </div>
+                        <table class="bordered striped">
+                            <tr>
+                                <td><span class="red-text">{{ cote.match.equipe1.equipenom }}</span></td>
+                                <td></td>
+                                <td><span class="blue-text">{{ cote.match.equipe2.equipenom }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="red-text">{{ cote.coteEquipe1 }}</span></td>
+                                <td><span class="black-text">{{ cote.coteNul }}</span></td>
+                                <td><span class="blue-text">{{ cote.coteEquipe2 }}</span></td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="match-sport">
-                        <p style="font-weight: bold">{{ cote.match.sport.sportnom }}</p>
-                    </div>
-                    <table class="bordered striped">
-                        <tr>
-                            <td><span class="red-text">{{ cote.match.equipe1.equipenom }}</span></td>
-                            <td></td>
-                            <td><span class="blue-text">{{ cote.match.equipe2.equipenom }}</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="red-text">{{ cote.coteEquipe1 }}</span></td>
-                            <td><span class="black-text">{{ cote.coteNul }}</span></td>
-                            <td><span class="blue-text">{{ cote.coteEquipe2 }}</span></td>
-                        </tr>
-                    </table>
+                </a>
 
 
-                </div>
             {% endfor %}
         </div>
     </div>

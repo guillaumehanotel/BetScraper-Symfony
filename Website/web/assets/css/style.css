@@ -1,20 +1,19 @@
 
 h1 {
-   margin: 0;
+    margin: 0;
 }
 
 .equipes p {
-   margin: 0;
+    margin: 0;
 }
 
 .divider {
-   margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .matchs h3, h4 {
-   padding-top: 50px;
+    padding-top: 50px;
 }
-
 
 .matchs .match {
     border: solid black 1px;
@@ -43,10 +42,50 @@ h1 {
     height: 30px;
 }
 
+.match table td {
+    text-align: center;
+    width: 33%;
+}
 
-.match table td{
+.cote-date {
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.match-infos .match-info {
+    margin-right: auto;
+    margin-left: auto;
     text-align: center;
 }
+
+.match-infos .match-sport {
+    height: 50px;
+    line-height: 50px;
+    margin-top: 50px;
+    width: 300px;
+    font-width: 700;
+    font-size: 25px;
+    border: solid black 2px;
+    border-radius: 8px;
+}
+
+.match-infos .match-equipes {
+    margin-top: 20px;
+    font-width: 700;
+    font-size: 35px;
+}
+
+.match-infos .match-id {
+    margin-bottom: 20px;
+    font-size: 11px;
+}
+
+.match-infos .match-date {
+    margin-bottom: 40px;
+    font-width: 500;
+    font-size: 25px;
+}
+
 
 
 

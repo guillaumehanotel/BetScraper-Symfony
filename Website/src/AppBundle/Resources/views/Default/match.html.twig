@@ -1,0 +1,72 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block main %}
+    <div class="match-infos">
+        <div class="match-info match-sport">
+            {{ matchSport }}
+        </div>
+        <div class="match-info match-equipes">
+            {{ matchEquipe1Nom }} - {{ matchEquipe2Nom }}
+        </div>
+        <div class="match-info match-id">
+            ID : {{ matchId }}
+        </div>
+        <div class="match-info match-date">
+            {{ matchDate|date("d/m/Y H:i") }}
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <table class="bordered striped">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Cote {{ matchEquipe1Nom }}</th>
+            <th>Cote Nul</th>
+            <th>Cote {{ matchEquipe2Nom }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% set previous = false %}
+        {% for cote in cotes|reverse %}
+
+            {# si il existe un précédent #}
+            {% if previous %}
+
+                {# Calcul de la variation en fonction de la cote acteulle et de la précédente #}
+                {% set varCoteEquipe1 = calculVar(cote.coteEquipe1,previous.coteEquipe1) %}
+                {% set varCoteNul = calculVar(cote.coteNul,previous.coteNul) %}
+                {% set varCoteEquipe2 = calculVar(cote.coteEquipe2,previous.coteEquipe2) %}
+
+                {# Formattage de la cote pour bien l'afficher #}
+                {% set varCoteEquipe1 = formatCote(varCoteEquipe1) %}
+                {% set varCoteNul = formatCote(varCoteNul) %}
+                {% set varCoteEquipe2 = formatCote(varCoteEquipe2) %}
+
+                {% if varCoteEquipe1 != '-' or varCoteNul != '-' or varCoteEquipe2 != '-' %}
+                    <tr class="variations">
+                        <td></td>
+                        <td>{{ varCoteEquipe1 }}</td>
+                        <td>{{ varCoteNul }}</td>
+                        <td>{{ varCoteEquipe2 }}</td>
+                    </tr>
+                {% endif %}
+
+            {% endif %}
+            <tr>
+                <td class="cote-date">{{ cote.coteDate|date("d/m/Y H:i") }}</td>
+                <td>{{ cote.coteEquipe1 }}</td>
+                <td>{{ cote.coteNul }}</td>
+                <td>{{ cote.coteEquipe2 }}</td>
+            </tr>
+            {% set previous = cote %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

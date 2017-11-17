@@ -1,0 +1,5 @@
+services:
+    appbundle.twig.cote_extension:
+        class: AppBundle\Twig\CoteExtension
+        tags:
+                    - { name: twig.extension }

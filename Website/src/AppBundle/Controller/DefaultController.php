@@ -25,11 +25,43 @@ class DefaultController extends Controller {
         //$cotes = $coteRepository->findAll();
         $cotes = $coteRepository->findAllRecentCote();
 
+
         return $this->render('AppBundle:Default:index.html.twig', [
-            'cotes' => $cotes
+            'cotes' => $cotes,
         ]);
     }
 
+
+    /**
+     * @Route("/match/{matchId}", name="match")
+     * @param Request $request
+     * @param int $matchId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewMatchAction(Request $request, int $matchId){
+
+        $doctrine = $this->getDoctrine();
+        $entityManager = $doctrine->getManager();
+
+        $coteRepository = $doctrine->getRepository(Cote::class);
+        $cotes = $coteRepository->findBy(['match' => $matchId]);
+
+        $match_date = $cotes[0]->getMatch()->getMatchDate();
+        $match_equipe1_nom = $cotes[0]->getMatch()->getEquipe1()->getEquipeNom();
+        $match_equipe2_nom = $cotes[0]->getMatch()->getEquipe2()->getEquipeNom();
+        $match_sport = $cotes[0]->getMatch()->getSport()->getSportNom();
+
+
+        return $this->render('AppBundle:Default:match.html.twig', [
+            'cotes' => $cotes,
+            'matchDate' => $match_date,
+            'matchEquipe1Nom' => $match_equipe1_nom,
+            'matchEquipe2Nom' => $match_equipe2_nom,
+            'matchSport' => $match_sport,
+            'matchId' => $matchId
+        ]);
+
+    }
 
     /**
      * @Route("/sports", name="list_sports")
@@ -65,22 +97,7 @@ class DefaultController extends Controller {
 
     }
 
-    /**
-     * @Route("/matchs", name="list_matchs")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewMatchAction(Request $request){
 
-        $doctrine = $this->getDoctrine();
-        $entityManager = $doctrine->getManager();
-        $equipeRepository = $doctrine->getRepository(SpMatch::class);
-        $matchs = $equipeRepository->findAllFromToday();
-        return $this->render('AppBundle:Default:matchs.html.twig', [
-            'matchs' => $matchs,
-        ]);
-
-    }
 
 
 
