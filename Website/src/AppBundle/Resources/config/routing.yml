@@ -1,0 +1,30 @@
+# src/AppBundle/Resources/config/routing.yml
+
+homepage:
+    path: /
+    defaults:
+        _controller: AppBundle:Default:index
+    options:
+        expose: true
+
+match:
+    path: /match/{matchId}
+    defaults:
+        _controller: AppBundle:Default:viewMatch
+    options:
+        expose: true
+
+list_sports:
+    path: /sports
+    defaults:
+        _controller: AppBundle:Default:viewSport
+    options:
+        expose: true
+
+list_equipes:
+    path: /equipes
+    defaults:
+        _controller: AppBundle:Default:viewEquipe
+    options:
+        expose: true
+

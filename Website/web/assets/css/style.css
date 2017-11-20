@@ -87,6 +87,35 @@ h1 {
 }
 
 
+.table-cotes td {
+    padding: 0px;
+    text-align: center;
+}
+
+.table-cotes table {
+    border-left: solid #D0D0D0 1px;
+    border-right: solid #D0D0D0 1px;
+}
+
+.table-cotes thead tr td {
+    text-align: center;
+}
+
+.table-cotes table td {
+    border-top: solid #D0D0D0 1px;
+    padding: 0px;
+    text-align: center;
+}
+
+
+.card-style {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+
+.card-style {
+    cursor: pointer;
+}
 
 
 

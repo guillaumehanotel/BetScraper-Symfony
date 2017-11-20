@@ -46,6 +46,8 @@
 {% block javascripts %}
     <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/materialize.min.js') }}"></script>
+    <script src="{{ asset('assets/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
 {% endblock %}
 </body>

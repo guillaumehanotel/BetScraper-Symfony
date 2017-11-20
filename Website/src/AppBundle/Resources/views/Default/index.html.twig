@@ -11,52 +11,67 @@
             {% set date_day = null %}
             {% set date_hour = null %}
             <!-- Parcourt des matchs d'aujourd'hui et d'après triés par date -->
-            {% for cote in cotes %}
 
-                <!-- Affichage groupé par jour -->
-                {% if date_day != cote.match.matchdate|date("l d F Y") %}
-                    {% set date_day = cote.match.matchdate|date("l d F Y") %}
-                    <div class="date_day" style="clear: both">
-                        <h3>{{ date_day }}</h3>
-                    </div>
-                    <div class="divider"></div>
-                {% endif %}
+            <table class="table-cotes striped bordered">
+                <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Sport</td>
+                    <td>Cote Equipe 1</td>
+                    <td>Cote Nul</td>
+                    <td>Cote Equipe 2</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cote in cotes %}
 
-                <!-- Affichage groupé par horaire -->
-                {% if date_hour != cote.match.matchdate|date("H:i") %}
-                    {% set date_hour = cote.match.matchdate|date("H:i") %}
-                    <div class="date_hour" style="clear: both">
-                        <h4>{{ date_hour }}</h4>
-                    </div>
-                    <div class="divider"></div>
-                {% endif %}
+                    <tr class="hover" data-match_id="{{ cote.match.matchId }}">
+                        <td>{{ cote.match.matchdate|date("d/m/Y H:i") }}</td>
+                        <td><span style="font-weight: bold">{{ cote.match.sport.sportnom }}</span></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><span class="red-text">{{ cote.match.equipe1.equipenom }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="red-text">{{ cote.coteEquipe1 }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>+Var%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ cote.coteNul }}</td>
+                                </tr>
+                                <tr>
+                                    <td>+Var%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><span class="blue-text">{{ cote.match.equipe2.equipenom }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="blue-text">{{ cote.coteEquipe2 }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>+Var%</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-
-                <a class="hoverable" href="{{ path("match", {'matchId': cote.match.matchId }) }}">
-                    <div class="match hoverable offset-m1 col m5">
-                        <div class="match-date">
-                            <p class="black-text">{{ cote.match.matchdate|date("d/m/Y H:i") }}</p>
-                        </div>
-                        <div class="match-sport">
-                            <p class="black-text" style="font-weight: bold">{{ cote.match.sport.sportnom }}</p>
-                        </div>
-                        <table class="bordered striped">
-                            <tr>
-                                <td><span class="red-text">{{ cote.match.equipe1.equipenom }}</span></td>
-                                <td></td>
-                                <td><span class="blue-text">{{ cote.match.equipe2.equipenom }}</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="red-text">{{ cote.coteEquipe1 }}</span></td>
-                                <td><span class="black-text">{{ cote.coteNul }}</span></td>
-                                <td><span class="blue-text">{{ cote.coteEquipe2 }}</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </a>
-
-
-            {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

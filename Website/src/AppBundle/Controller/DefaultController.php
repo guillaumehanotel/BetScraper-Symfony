@@ -12,8 +12,11 @@ use AppBundle\Entity\Equipe;
 use AppBundle\Entity\Cote;
 
 class DefaultController extends Controller {
+
+
     /**
-     * @Route("/", name="homepage")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request) {
 
@@ -33,7 +36,6 @@ class DefaultController extends Controller {
 
 
     /**
-     * @Route("/match/{matchId}", name="match")
      * @param Request $request
      * @param int $matchId
      * @return \Symfony\Component\HttpFoundation\Response
@@ -64,7 +66,6 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/sports", name="list_sports")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -81,7 +82,7 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/equipes", name="list_equipes")
+
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
