@@ -117,6 +117,9 @@ h1 {
     cursor: pointer;
 }
 
+.bold {
+    font-weight: 900;
+}
 
 
 

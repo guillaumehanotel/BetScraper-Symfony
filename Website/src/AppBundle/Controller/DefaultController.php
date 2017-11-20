@@ -27,10 +27,12 @@ class DefaultController extends Controller {
 
         //$cotes = $coteRepository->findAll();
         $cotes = $coteRepository->findAllRecentCote();
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain'];
 
 
         return $this->render('AppBundle:Default:index.html.twig', [
             'cotes' => $cotes,
+            'sportsNotCoteNul' => $sports_without_cote_nul
         ]);
     }
 
@@ -53,6 +55,14 @@ class DefaultController extends Controller {
         $match_equipe2_nom = $cotes[0]->getMatch()->getEquipe2()->getEquipeNom();
         $match_sport = $cotes[0]->getMatch()->getSport()->getSportNom();
 
+        $nb_cotes = count($cotes)-1;
+
+        $cote_var_equipe1 = $cotes[$nb_cotes]->getCoteVarEquipe1();
+        $cote_var_equipe2 = $cotes[$nb_cotes]->getCoteVarEquipe2();
+        $cote_var_nul = $cotes[$nb_cotes]->getCoteVarNul();
+
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain'];
+
 
         return $this->render('AppBundle:Default:match.html.twig', [
             'cotes' => $cotes,
@@ -60,7 +70,11 @@ class DefaultController extends Controller {
             'matchEquipe1Nom' => $match_equipe1_nom,
             'matchEquipe2Nom' => $match_equipe2_nom,
             'matchSport' => $match_sport,
-            'matchId' => $matchId
+            'matchId' => $matchId,
+            'coteVarEquipe1' => $cote_var_equipe1,
+            'coteVarEquipe2' => $cote_var_equipe2,
+            'coteVarNul' => $cote_var_nul,
+            'sportsNotCoteNul' => $sports_without_cote_nul
         ]);
 
     }

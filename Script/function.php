@@ -334,6 +334,54 @@ function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
     return !empty($cote) ? $cote : null;
 }
 
+
+/**
+ * Récupère les plus vieilles cotes d'un match donné
+ * @param PDO $bdd
+ * @param $match_id
+ * @return mixed|null
+ */
+function getOldCotes(PDO $bdd, $match_id){
+    $requete = $bdd->prepare("SELECT cote_equipe1, cote_equipe2, cote_nul 
+                                       FROM cote 
+                                       WHERE match_id = :match_id 
+                                       HAVING MIN(cote_date)");
+    $param = [
+        'match_id' => $match_id
+    ];
+    $cotes = getResultatsRequete($bdd, $requete, $param);
+    return !empty($cotes[0]) ? $cotes[0] : null;
+}
+
+/**
+ * Calcul de la variation entre l'ancienne cote et la nouvelle
+ * @param $old_cote
+ * @param $cote
+ * @return float|int
+ */
+function calculVar($old_cote, $cote){
+    $cote = str_replace(',','.', $cote);
+    $calcul_var = ((($cote - $old_cote) / $old_cote ) * 100);
+    return $calcul_var;
+}
+
+
+function insertVarCote(PDO $bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2, $var_cote_nul){
+    $requete = $bdd->prepare("UPDATE cote SET 
+                                    cote_var_equipe1 = :var_cote_equipe1, 
+                                    cote_var_equipe2 = :var_cote_equipe2,
+                                    cote_var_nul = :var_cote_nul
+                                    WHERE cote_id = :cote_id");
+    $param = [
+        'cote_id' => $cote_id,
+        'var_cote_equipe1' => $var_cote_equipe1,
+        'var_cote_equipe2' => $var_cote_equipe2,
+        'var_cote_nul' => $var_cote_nul
+    ];
+    executeRequest($bdd, $requete, $param);
+}
+
+
 /**
  * Insert la cote d'un match en BDD si elle n'existe pas déjà
  * @param PDO $bdd
@@ -344,7 +392,24 @@ function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
  * @param $date_today
  */
 function insertCote(PDO $bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today){
+    // Récupération des vieilles cotes si ils existent
+    $old_cotes = getOldCotes($bdd, $match_id);
+
+    if(!is_null($old_cotes)){
+        // Récupération des 3 cotes
+        $old_cote_equipe1 = str_replace(',','.', $old_cotes['cote_equipe1']);
+        $old_cote_equipe2 = str_replace(',','.', $old_cotes['cote_equipe2']);
+        $old_cote_nul= str_replace(',','.', $old_cotes['cote_nul']);
+
+        // calcul de la variation
+        $var_cote_equipe1 = calculVar($old_cote_equipe1, $match_cote_equipe_1);
+        $var_cote_equipe2 = calculVar($old_cote_equipe2, $match_cote_equipe_2);
+        $var_cote_nul = calculVar($old_cote_nul, $match_cote_nul);
+    }
+
+
     $cote = getCoteByMatchIdAndDate($bdd, $match_id, $date_today);
+    $cote_id = $cote[0]['cote_id'];
     if (is_null($cote)){
         $requete = $bdd->prepare("INSERT INTO cote (cote_date, cote_equipe1, cote_equipe2, cote_nul, match_id) 
                                                     VALUES (:cote_date, :cote_equipe1, :cote_equipe2, :cote_nul, :match_id)");
@@ -357,7 +422,18 @@ function insertCote(PDO $bdd, $match_id, $match_cote_equipe_1, $match_cote_equip
           'match_id' => $match_id
         ];
         executeRequest($bdd, $requete, $param);
+        $cote_id = $bdd->lastInsertId();
     }
+
+    // si il existe bien des anciennes cotes, on insert les variations avec l'id de la cote
+    // que l'on vient d'insérer
+    if(!is_null($old_cotes)){
+        insertVarCote($bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2, $var_cote_nul);
+    }
+
+
+
+
 }
 
 
