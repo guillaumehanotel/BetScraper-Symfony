@@ -172,6 +172,7 @@ function printErrorInfo(PDO $bdd, $requete, $bdd_error) {
 function getResultatsRequete(PDO $bdd, PDOStatement $requete, array $param) {
     $reponse_requete = $requete->execute($param);
     if ($reponse_requete) {
+        $resultat_requete = [];
         while ($row = $requete->fetch()){
             $resultat_requete[] = $row;
         }
@@ -361,7 +362,8 @@ function getOldCotes(PDO $bdd, $match_id){
  */
 function calculVar($old_cote, $cote){
     $cote = str_replace(',','.', $cote);
-    $calcul_var = ((($cote - $old_cote) / $old_cote ) * 100);
+    $old_cote = str_replace(',','.', $old_cote);
+    $calcul_var = ($old_cote != 0) ? ((($cote - $old_cote) / $old_cote ) * 100) : 0;
     return $calcul_var;
 }
 

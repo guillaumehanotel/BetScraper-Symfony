@@ -27,7 +27,7 @@ class DefaultController extends Controller {
 
         //$cotes = $coteRepository->findAll();
         $cotes = $coteRepository->findAllRecentCote();
-        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain'];
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton'];
 
 
         return $this->render('AppBundle:Default:index.html.twig', [
@@ -61,7 +61,7 @@ class DefaultController extends Controller {
         $cote_var_equipe2 = $cotes[$nb_cotes]->getCoteVarEquipe2();
         $cote_var_nul = $cotes[$nb_cotes]->getCoteVarNul();
 
-        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain'];
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton'];
 
 
         return $this->render('AppBundle:Default:match.html.twig', [

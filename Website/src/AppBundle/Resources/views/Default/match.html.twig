@@ -18,7 +18,7 @@
 
     <div class="divider"></div>
 
-    <table class="bordered striped">
+    <table class="bordered striped match-cotes">
         <thead>
         <tr>
             <th>Date</th>
@@ -31,14 +31,14 @@
         <tbody>
 
         <tr class="variations">
-            <td>Total</td>
-            <td>{{ formatCote(coteVarEquipe1) }}</td>
-            <td>
+            <td class="bold">TOTAL</td>
+            <td class="bold">{{ formatCote(coteVarEquipe1) }}</td>
+            <td class="bold">
                 {% if matchSport not in sportsNotCoteNul %}
                     {{ formatCote(coteVarNul) }}
                 {% endif %}
             </td>
-            <td>{{ formatCote(coteVarEquipe2) }}</td>
+            <td class="bold">{{ formatCote(coteVarEquipe2) }}</td>
         </tr>
 
         {% set previous = false %}

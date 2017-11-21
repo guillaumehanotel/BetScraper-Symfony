@@ -103,6 +103,7 @@ h1 {
 
 .table-cotes table td {
     border-top: solid #D0D0D0 1px;
+    border-bottom: solid #D0D0D0 1px;
     padding: 0px;
     text-align: center;
 }
@@ -121,6 +122,9 @@ h1 {
     font-weight: 900;
 }
 
+table.match-cotes td, th {
+    text-align: center;
+}
 
 
 

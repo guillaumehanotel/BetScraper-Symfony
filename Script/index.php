@@ -101,42 +101,46 @@ foreach ($urls as $url) {
                 $match_equipes = getEquipesFromMatchCrawler($match_crawler);
                 $match_cotes = getCotesFromMatchCrawler($match_crawler, $nodeHtml);
 
-                // l'ID du match
-                $match_id = explode('_', $match_ids[$nb_match])[1];
-                // l'equipe 1 du match
-                $match_equipe_1 = trim(explode(' - ', $match_equipes)[0]);
-                // l'equipe 2 du match
-                $match_equipe_2 = trim(explode(' - ', $match_equipes)[1]);
-                // la date du match
-                $match_date = $date_formatted . " " . $heure_formatted;
+                // si jamais ce n'est pas un match : pas de tiret présent dans les noms des équipes
+                if (strpos($match_equipes, ' - ') !== false) {
 
-                if (!empty($match_equipe_1) && !empty($match_equipe_2)) {
+                    // l'ID du match
+                    $match_id = explode('_', $match_ids[$nb_match])[1];
+                    // l'equipe 1 du match
+                    $match_equipe_1 = trim(explode(' - ', $match_equipes)[0]);
+                    // l'equipe 2 du match
+                    $match_equipe_2 = trim(explode(' - ', $match_equipes)[1]);
+                    // la date du match
+                    $match_date = $date_formatted . " " . $heure_formatted;
 
-                    $equipe1_id = insertEquipe($bdd, $match_equipe_1);
-                    $equipe2_id = insertEquipe($bdd, $match_equipe_2);
+                    if (!empty($match_equipe_1) && !empty($match_equipe_2)) {
 
-                    insertMatch($bdd, $match_id, $match_date, $sport_id, $equipe1_id, $equipe2_id);
+                        $equipe1_id = insertEquipe($bdd, $match_equipe_1);
+                        $equipe2_id = insertEquipe($bdd, $match_equipe_2);
 
-                    if (count($match_cotes) == 2) {
-                        // Pas de cote nul
-                        // Tennis, BasketBall, Volley-ball, Formule 1, Football américain, Baseball
-                        $match_cote_equipe_1 = $match_cotes[0];
-                        $match_cote_nul = "";
-                        $match_cote_equipe_2 = $match_cotes[1];
-                    } elseif (count($match_cotes) == 3) {
-                        // Cote nul
-                        // Football, Rugby, Handball, Hockey sur glace, Boxe, Ski Alpin, Ski de fond
-                        $match_cote_equipe_1 = $match_cotes[0];
-                        $match_cote_nul = $match_cotes[1];
-                        $match_cote_equipe_2 = $match_cotes[2];
-                    } else {
-                        $match_cote_equipe_1 = "";
-                        $match_cote_nul = "Pariez !";
-                        $match_cote_equipe_2 = "";
+                        insertMatch($bdd, $match_id, $match_date, $sport_id, $equipe1_id, $equipe2_id);
+
+                        if (count($match_cotes) == 2) {
+                            // Pas de cote nul
+                            // Tennis, BasketBall, Volley-ball, Formule 1, Football américain, Baseball
+                            $match_cote_equipe_1 = $match_cotes[0];
+                            $match_cote_nul = "";
+                            $match_cote_equipe_2 = $match_cotes[1];
+                        } elseif (count($match_cotes) == 3) {
+                            // Cote nul
+                            // Football, Rugby, Handball, Hockey sur glace, Boxe, Ski Alpin, Ski de fond
+                            $match_cote_equipe_1 = $match_cotes[0];
+                            $match_cote_nul = $match_cotes[1];
+                            $match_cote_equipe_2 = $match_cotes[2];
+                        } else {
+                            $match_cote_equipe_1 = "";
+                            $match_cote_nul = "Pariez !";
+                            $match_cote_equipe_2 = "";
+                        }
+
+                        insertCote($bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today);
+
                     }
-
-                    insertCote($bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today);
-
                 }
 
                 $td_match_cote_equipe_1 = ($match_cote_equipe_1 >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_equipe_1 . "</td>" : "<td>" . $match_cote_equipe_1 . "</td>";
@@ -148,7 +152,7 @@ foreach ($urls as $url) {
 
                 echo "<table style='border: black solid 1px'>";
                 echo "<tr><th>Cote Equipe 1</th><th>Cote Nul</th><th>Cote Equipe 2</th></tr>";
-                echo "<tr>". $td_match_cote_equipe_1 .$td_match_cote_nul.$td_match_cote_equipe_2."</tr>";
+                echo "<tr>" . $td_match_cote_equipe_1 . $td_match_cote_nul . $td_match_cote_equipe_2 . "</tr>";
                 echo "</table>";
 
                 $nb_match++;
