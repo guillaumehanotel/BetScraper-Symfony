@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Fonction prenant en paramètre un nombre de jour,
  * Retourne une liste d'objets DateTime concernant les dates
@@ -9,17 +8,17 @@
  * @param $nb_day
  * @return array $dates
  */
-function get_odds_for_the_next_days($nb_day){
+function get_odds_for_the_next_days($nb_day) {
     $dates = [];
 
     $i = 1;
-    while ($i <= $nb_day){
-        if($i == 1){
+    while ($i <= $nb_day) {
+        if ($i == 1) {
             $dates[] = new \DateTime('now');
-        } elseif ($i == 2){
+        } elseif ($i == 2) {
             $dates[] = new \DateTime('tomorrow');
         } else {
-            $dates[] = new \DateTime('tomorrow + '. ($i-2) .'day');
+            $dates[] = new \DateTime('tomorrow + ' . ($i - 2) . 'day');
         }
         $i++;
     }
@@ -33,7 +32,7 @@ function get_odds_for_the_next_days($nb_day){
  * @param array $dates
  * @return array
  */
-function get_urls_from_dates(array $dates){
+function get_urls_from_dates(array $dates) {
     $urls = [];
     $url_part_1 = "https://www.betclic.fr/calendrier-0?";
     $url_part_3 = "&SortBy=Date&Live=false&MultipleBoost=false&CashOut=false&Streaming=false&StartIndex=0&Search=";
@@ -42,7 +41,7 @@ function get_urls_from_dates(array $dates){
     $url_part_2_1 = "From=";
     $url_part_2_3 = "&SyncFrom=";
 
-    foreach ($dates as $date){
+    foreach ($dates as $date) {
         $url_part_2_2 = urlencode($date->format("d/m/Y"));
         $url_part_2_4 = urlencode($date->format("m/d/Y"));
         $url_part_2 = $url_part_2_1 . $url_part_2_2 . $url_part_2_3 . $url_part_2_4;
@@ -59,8 +58,8 @@ function get_urls_from_dates(array $dates){
  * @return mixed
  */
 function get_html_content($url) {
-    $curl_handle=curl_init();
-    curl_setopt($curl_handle, CURLOPT_URL,$url);
+    $curl_handle = curl_init();
+    curl_setopt($curl_handle, CURLOPT_URL, $url);
     curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
     curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl_handle, CURLOPT_USERAGENT, 'Your application name');
@@ -75,20 +74,32 @@ function get_html_content($url) {
  * @param $mois_str
  * @return int
  */
-function getMoisNum($mois_str){
-    switch ($mois_str){
-        case "Janvier" : return 1;
-        case "Février" : return 2;
-        case "Mars" : return 3;
-        case "Avril" : return 4;
-        case "Mai" : return 5;
-        case "Juin" : return 6;
-        case "Juiller" : return 7;
-        case "Août" : return 8;
-        case "Septembre" : return 9;
-        case "Octobre" : return 10;
-        case "Novembre" : return 11;
-        case "Décembre" : return 12;
+function getMoisNum($mois_str) {
+    switch ($mois_str) {
+        case "Janvier" :
+            return 1;
+        case "Février" :
+            return 2;
+        case "Mars" :
+            return 3;
+        case "Avril" :
+            return 4;
+        case "Mai" :
+            return 5;
+        case "Juin" :
+            return 6;
+        case "Juiller" :
+            return 7;
+        case "Août" :
+            return 8;
+        case "Septembre" :
+            return 9;
+        case "Octobre" :
+            return 10;
+        case "Novembre" :
+            return 11;
+        case "Décembre" :
+            return 12;
     }
 }
 
@@ -98,16 +109,16 @@ function getMoisNum($mois_str){
  * @param $date_txt
  * @return array
  */
-function getDateArray($date_txt){
+function getDateArray($date_txt) {
     $explode_date = explode(" ", $date_txt);
     $jour = $explode_date[1];
     $mois_str = $explode_date[2];
     $mois = getMoisNum($mois_str);
     $annee = $explode_date[3];
     $array_date = [
-      'jour' => $jour,
-      'mois' => $mois,
-      'annee' => $annee
+        'jour' => $jour,
+        'mois' => $mois,
+        'annee' => $annee
     ];
     return $array_date;
 }
@@ -173,7 +184,7 @@ function getResultatsRequete(PDO $bdd, PDOStatement $requete, array $param) {
     $reponse_requete = $requete->execute($param);
     if ($reponse_requete) {
         $resultat_requete = [];
-        while ($row = $requete->fetch()){
+        while ($row = $requete->fetch()) {
             $resultat_requete[] = $row;
         }
         return $resultat_requete;
@@ -189,7 +200,7 @@ function getResultatsRequete(PDO $bdd, PDOStatement $requete, array $param) {
  * @param PDOStatement $requete
  * @param $param
  */
-function executeRequest(PDO $bdd, PDOStatement $requete, $param){
+function executeRequest(PDO $bdd, PDOStatement $requete, $param) {
     $reponse_requete = $requete->execute($param);
     if (!$reponse_requete) {
         printErrorInfo($bdd, $requete, false);
@@ -203,7 +214,7 @@ function executeRequest(PDO $bdd, PDOStatement $requete, $param){
  * @param $sport_name
  * @return array|mixed|null
  */
-function getSportByName(PDO $bdd, $sport_name){
+function getSportByName(PDO $bdd, $sport_name) {
     $requete = $bdd->prepare("SELECT * 
                 FROM sport 
                 WHERE sport_nom = :sport_name");
@@ -221,10 +232,10 @@ function getSportByName(PDO $bdd, $sport_name){
  * @param $sport_name
  * @return string
  */
-function insertSport(PDO $bdd, $sport_name){
+function insertSport(PDO $bdd, $sport_name) {
     $sport = getSportByName($bdd, $sport_name);
     // si aucun sport avec ce nom n'est trouvé, on insert
-    if(is_null($sport)){
+    if (is_null($sport)) {
         $requete = $bdd->prepare("INSERT INTO sport (sport_nom) VALUES (:sport_name)");
         $param = [
             'sport_name' => $sport_name
@@ -243,7 +254,7 @@ function insertSport(PDO $bdd, $sport_name){
  * @param $equipe_name
  * @return array|mixed|null
  */
-function getEquipeByName(PDO $bdd, $equipe_name){
+function getEquipeByName(PDO $bdd, $equipe_name) {
     $requete = $bdd->prepare("SELECT * 
                 FROM equipe
                 WHERE equipe_nom = :equipe_name");
@@ -261,11 +272,11 @@ function getEquipeByName(PDO $bdd, $equipe_name){
  * @param $equipe_name
  * @return string
  */
-function insertEquipe(PDO $bdd, string $equipe_name){
+function insertEquipe(PDO $bdd, string $equipe_name) {
     // si aucune équipe avec ce nom n'est trouvé, on insert
     $equipe = getEquipeByName($bdd, $equipe_name);
 
-    if(is_null($equipe)){
+    if (is_null($equipe)) {
         $requete = $bdd->prepare("INSERT INTO equipe (equipe_nom) VALUES (:equipe_name)");
         $param = [
             'equipe_name' => $equipe_name
@@ -284,7 +295,7 @@ function insertEquipe(PDO $bdd, string $equipe_name){
  * @param $match_id
  * @return array|null
  */
-function getMatchById(PDO $bdd, $match_id){
+function getMatchById(PDO $bdd, $match_id) {
     $requete = $bdd->prepare("SELECT * FROM sp_match WHERE `match_id` = :match_id");
     $param = [
         'match_id' => $match_id
@@ -302,9 +313,9 @@ function getMatchById(PDO $bdd, $match_id){
  * @param $equipe1_id
  * @param $equipe2_id
  */
-function insertMatch(PDO $bdd, $match_id, $match_date, $sport_id, $equipe1_id, $equipe2_id){
+function insertMatch(PDO $bdd, $match_id, $match_date, $sport_id, $equipe1_id, $equipe2_id) {
     $match = getMatchById($bdd, $match_id);
-    if(is_null($match)){
+    if (is_null($match)) {
         $requete = $bdd->prepare("INSERT INTO sp_match (match_id, match_date, sport_id, equipe_1_id, equipe_2_id) 
                                             VALUES (:match_id, :match_date, :sport_id, :equipe_1_id, :equipe_2_id)");
         $param = [
@@ -325,11 +336,11 @@ function insertMatch(PDO $bdd, $match_id, $match_date, $sport_id, $equipe1_id, $
  * @param $date_today
  * @return array|null
  */
-function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
+function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today) {
     $requete = $bdd->prepare("SELECT * FROM cote WHERE match_id = :match_id AND cote_date = :date_today");
     $param = [
-      'match_id' => $match_id,
-      'date_today' => $date_today
+        'match_id' => $match_id,
+        'date_today' => $date_today
     ];
     $cote = getResultatsRequete($bdd, $requete, $param);
     return !empty($cote) ? $cote : null;
@@ -342,7 +353,7 @@ function getCoteByMatchIdAndDate(PDO $bdd, $match_id, $date_today){
  * @param $match_id
  * @return mixed|null
  */
-function getOldCotes(PDO $bdd, $match_id){
+function getOldCotes(PDO $bdd, $match_id) {
     $requete = $bdd->prepare("SELECT cote_equipe1, cote_equipe2, cote_nul 
                                        FROM cote 
                                        WHERE match_id = :match_id 
@@ -360,15 +371,15 @@ function getOldCotes(PDO $bdd, $match_id){
  * @param $cote
  * @return float|int
  */
-function calculVar($old_cote, $cote){
-    $cote = str_replace(',','.', $cote);
-    $old_cote = str_replace(',','.', $old_cote);
-    $calcul_var = ($old_cote != 0) ? ((($cote - $old_cote) / $old_cote ) * 100) : 0;
+function calculVar($old_cote, $cote) {
+    $cote = str_replace(',', '.', $cote);
+    $old_cote = str_replace(',', '.', $old_cote);
+    $calcul_var = ($old_cote != 0) ? ((($cote - $old_cote) / $old_cote) * 100) : 0;
     return $calcul_var;
 }
 
 
-function insertVarCote(PDO $bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2, $var_cote_nul){
+function insertVarCote(PDO $bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2, $var_cote_nul) {
     $requete = $bdd->prepare("UPDATE cote SET 
                                     cote_var_equipe1 = :var_cote_equipe1, 
                                     cote_var_equipe2 = :var_cote_equipe2,
@@ -393,49 +404,68 @@ function insertVarCote(PDO $bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2,
  * @param $match_cote_nul
  * @param $date_today
  */
-function insertCote(PDO $bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today){
-    // Récupération des vieilles cotes si ils existent
-    $old_cotes = getOldCotes($bdd, $match_id);
-
-    if(!is_null($old_cotes)){
-        // Récupération des 3 cotes
-        $old_cote_equipe1 = str_replace(',','.', $old_cotes['cote_equipe1']);
-        $old_cote_equipe2 = str_replace(',','.', $old_cotes['cote_equipe2']);
-        $old_cote_nul= str_replace(',','.', $old_cotes['cote_nul']);
-
-        // calcul de la variation
-        $var_cote_equipe1 = calculVar($old_cote_equipe1, $match_cote_equipe_1);
-        $var_cote_equipe2 = calculVar($old_cote_equipe2, $match_cote_equipe_2);
-        $var_cote_nul = calculVar($old_cote_nul, $match_cote_nul);
-    }
+function insertCote(PDO $bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today) {
 
 
     $cote = getCoteByMatchIdAndDate($bdd, $match_id, $date_today);
     $cote_id = $cote[0]['cote_id'];
-    if (is_null($cote)){
+
+    if (is_null($cote)) {
+
+        // Récupération des vieilles cotes si elles existent
+        $old_cotes = getOldCotes($bdd, $match_id);
+
+        if (!is_null($old_cotes)) {
+            // Récupération des 3 cotes
+            $old_cote_equipe1 = str_replace(',', '.', $old_cotes['cote_equipe1']);
+            $old_cote_equipe2 = str_replace(',', '.', $old_cotes['cote_equipe2']);
+            $old_cote_nul = str_replace(',', '.', $old_cotes['cote_nul']);
+
+            // calcul de la variation
+            $var_cote_equipe1 = calculVar($old_cote_equipe1, $match_cote_equipe_1);
+            $var_cote_equipe2 = calculVar($old_cote_equipe2, $match_cote_equipe_2);
+            $var_cote_nul = calculVar($old_cote_nul, $match_cote_nul);
+        }
+
         $requete = $bdd->prepare("INSERT INTO cote (cote_date, cote_equipe1, cote_equipe2, cote_nul, match_id) 
                                                     VALUES (:cote_date, :cote_equipe1, :cote_equipe2, :cote_nul, :match_id)");
 
         $param = [
-          'cote_date' => $date_today,
-          'cote_equipe1' => str_replace(',','.', $match_cote_equipe_1),
-          'cote_equipe2' => str_replace(',','.', $match_cote_equipe_2),
-          'cote_nul' => str_replace(',','.', $match_cote_nul),
-          'match_id' => $match_id
+            'cote_date' => $date_today,
+            'cote_equipe1' => str_replace(',', '.', $match_cote_equipe_1),
+            'cote_equipe2' => str_replace(',', '.', $match_cote_equipe_2),
+            'cote_nul' => str_replace(',', '.', $match_cote_nul),
+            'match_id' => $match_id
         ];
         executeRequest($bdd, $requete, $param);
         $cote_id = $bdd->lastInsertId();
+
+
     }
 
     // si il existe bien des anciennes cotes, on insert les variations avec l'id de la cote
     // que l'on vient d'insérer
-    if(!is_null($old_cotes)){
+    if (!is_null($old_cotes)) {
         insertVarCote($bdd, $cote_id, $var_cote_equipe1, $var_cote_equipe2, $var_cote_nul);
     }
 
+}
 
 
+function cleanCotesFromMatch($bdd, $match_id, $date_today){
+    $requete = $bdd->prepare("DELETE FROM cote WHERE match_id = :match_id");
+    $param = [
+        'match_id' => $match_id
+    ];
+    executeRequest($bdd, $requete, $param);
 
+    $requete = $bdd->prepare("INSERT INTO cote (cote_date, cote_equipe1, cote_equipe2, cote_nul, match_id) 
+                                                    VALUES (:cote_date, 0, 0, 0, :match_id)");
+    $param = [
+        'cote_date' => $date_today,
+        'match_id' => $match_id
+    ];
+    executeRequest($bdd, $requete, $param);
 }
 
 

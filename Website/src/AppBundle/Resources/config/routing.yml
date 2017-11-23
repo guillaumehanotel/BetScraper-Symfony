@@ -28,3 +28,9 @@ list_equipes:
     options:
         expose: true
 
+mail:
+    path: /mail
+    defaults:
+        _controller: AppBundle:Default:mail
+    options:
+        expose: true

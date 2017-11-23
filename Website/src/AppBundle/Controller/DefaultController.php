@@ -113,6 +113,32 @@ class DefaultController extends Controller {
     }
 
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function mailAction(Request $request){
+
+        $message = new \Swift_Message();
+        $message->setSubject('Test SwiftMailer')
+                ->setFrom('guillaumehanotel@orange.fr')
+                ->setTo('guiguihanotel@orange.fr')
+                ->setBody('Hello World Swift Mailer', 'text/html');
+
+        $message->getHeaders()->addIdHeader('Message-ID', "b3eb7202-d2f1-11e4-b9d6-1681e6b88ec1@domain.com");
+        $message->getHeaders()->addTextHeader('MIME-Version', '1.0');
+        $message->getHeaders()->addTextHeader('X-Mailer', 'PHP v' . phpversion());
+        $message->getHeaders()->addParameterizedHeader('Content-type', 'text/html', ['charset' => 'utf-8']);
+
+
+
+        $this->get('mailer')->send($message);
+
+        return $this->render('AppBundle:Default:mail.html.twig', [
+            'message' => $message
+        ]);
+    }
+
 
 
 

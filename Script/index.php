@@ -52,7 +52,8 @@ foreach ($urls as $url) {
     // tableau contenant chaque horaire
     $horaires_html = getHorairesContent($day_crawler, $nodeHtml);
 
-    echo "<h2>" . $content_date . "</h2>";
+    //echo "<h2>" . $content_date . "</h2>";
+    echo "\033[33m".$content_date . "\033[0m \n";
 
     // Parcourt des horaires
     foreach ($horaires_html as $horaire_html) {
@@ -63,8 +64,12 @@ foreach ($urls as $url) {
         $horaire = getHourFromHoraireCrawler($horaire_crawler);
         $heure_formatted = $horaire . ":00";
 
+        /*
         echo "<br>";
         echo "<h3>" . $horaire . "</h3>";
+        */
+        echo "\033[32m".$horaire . "\033[0m \n";
+
 
         // tableau contenant chaque event
         $events_html = getEventsContent($horaire_crawler, $nodeHtml);
@@ -84,9 +89,11 @@ foreach ($urls as $url) {
             // INSERT SPORT
             $sport_id = insertSport($bdd, $event_sport);
 
+            /*
             echo "<br>";
-
             echo "<p style='text-decoration: underline'>" . $event_sport . " : " . $event_name . "</p>";
+            */
+            echo "\033[31m".$event_sport . "\033[0m \n";
 
             $match_ids = getIdFromEventCrawler($event_crawler, $nodeId);
             $matchs_html = getMatchsContent($event_crawler, $nodeHtml);
@@ -126,19 +133,25 @@ foreach ($urls as $url) {
                             $match_cote_equipe_1 = $match_cotes[0];
                             $match_cote_nul = "";
                             $match_cote_equipe_2 = $match_cotes[1];
+                            insertCote($bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today);
+
                         } elseif (count($match_cotes) == 3) {
                             // Cote nul
                             // Football, Rugby, Handball, Hockey sur glace, Boxe, Ski Alpin, Ski de fond
                             $match_cote_equipe_1 = $match_cotes[0];
                             $match_cote_nul = $match_cotes[1];
                             $match_cote_equipe_2 = $match_cotes[2];
+                            insertCote($bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today);
+
+                            // "Pariez !"
                         } else {
-                            $match_cote_equipe_1 = "";
-                            $match_cote_nul = "Pariez !";
-                            $match_cote_equipe_2 = "";
+                            $match_cote_equipe_1 = null;
+                            $match_cote_nul = null;
+                            $match_cote_equipe_2 = null;
+                            // si on rencontre un match sans cote, supprimer toutes les cotes de ce match
+                            cleanCotesFromMatch($bdd, $match_id, $date_today);
                         }
 
-                        insertCote($bdd, $match_id, $match_cote_equipe_1, $match_cote_equipe_2, $match_cote_nul, $date_today);
 
                     }
                 }
@@ -148,12 +161,13 @@ foreach ($urls as $url) {
                 $td_match_cote_nul = ($match_cote_nul >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_nul . "</td>" : "<td>" . $match_cote_nul . "</td>";
 
                 echo "ID : " . $match_id;
-                echo "<p> - " . $match_equipe_1 . " VS " . $match_equipe_2 . "</p>";
+                echo " - " . $match_equipe_1 . " VS " . $match_equipe_2 . "\n";
+                //echo "<p> - " . $match_equipe_1 . " VS " . $match_equipe_2 . "</p>";
 
-                echo "<table style='border: black solid 1px'>";
-                echo "<tr><th>Cote Equipe 1</th><th>Cote Nul</th><th>Cote Equipe 2</th></tr>";
-                echo "<tr>" . $td_match_cote_equipe_1 . $td_match_cote_nul . $td_match_cote_equipe_2 . "</tr>";
-                echo "</table>";
+                //echo "<table style='border: black solid 1px'>";
+                //echo "<tr><th>Cote Equipe 1</th><th>Cote Nul</th><th>Cote Equipe 2</th></tr>";
+                //echo "<tr>" . $td_match_cote_equipe_1 . $td_match_cote_nul . $td_match_cote_equipe_2 . "</tr>";
+                //echo "</table>";
 
                 $nb_match++;
 
