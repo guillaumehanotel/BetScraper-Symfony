@@ -22,9 +22,6 @@ $nodeId = function ($node) {
 // On parcourt chaque URL
 foreach ($urls as $url) {
 
-    $get_html = false;
-    while ($get_html != true) {
-
         try {
             $html = get_html_content($url);
             $html = substr($html, 72461);
@@ -33,17 +30,20 @@ foreach ($urls as $url) {
 
             $get_html = true;
         } catch (InvalidArgumentException $ex) {
-            //echo "Fail";
+            echo "\n \033[31m Fail\033[0m \n";
             //$get_html = true;
         }
-
-    }
-
+    
 
     $date_today = getDateToday();
 
-    $day_crawler = getFirstDayContent($crawler);
-    $content_date = getDateFromDayCrawler($day_crawler);
+    try {
+        $day_crawler = getFirstDayContent($crawler);
+        $content_date = getDateFromDayCrawler($day_crawler);
+    } catch(InvalidArgumentException $ex){
+        echo "Fail";
+    }
+    
 
     $date_array = getDateArray($content_date);
     $date_formatted = $date_array['annee'] . '-' . $date_array['mois'] . '-' . $date_array['jour'];
@@ -156,12 +156,16 @@ foreach ($urls as $url) {
                     }
                 }
 
+                /*
                 $td_match_cote_equipe_1 = ($match_cote_equipe_1 >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_equipe_1 . "</td>" : "<td>" . $match_cote_equipe_1 . "</td>";
                 $td_match_cote_equipe_2 = ($match_cote_equipe_2 >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_equipe_2 . "</td>" : "<td>" . $match_cote_equipe_2 . "</td>";
                 $td_match_cote_nul = ($match_cote_nul >= 10) ? "<td style='color: red; font-weight: bold'>" . $match_cote_nul . "</td>" : "<td>" . $match_cote_nul . "</td>";
+                */
+                if(isset($match_id) && isset($match_equipe_1) && isset($match_equipe_2)){
+                    echo "ID : " . $match_id;
+                    echo " - " . $match_equipe_1 . " VS " . $match_equipe_2 . "\n"; 
+                }
 
-                echo "ID : " . $match_id;
-                echo " - " . $match_equipe_1 . " VS " . $match_equipe_2 . "\n";
                 //echo "<p> - " . $match_equipe_1 . " VS " . $match_equipe_2 . "</p>";
 
                 //echo "<table style='border: black solid 1px'>";
@@ -179,7 +183,7 @@ foreach ($urls as $url) {
 
 }
 
-echo "<style>
+/*echo "<style>
 table , th, td{
     border-width:1px; 
     border-style:solid; 
@@ -187,7 +191,7 @@ table , th, td{
  }
 </style>";
 
-
+*/
 
 
 

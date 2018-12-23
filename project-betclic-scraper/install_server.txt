@@ -1,0 +1,134 @@
+
+
+Documentation Installation Serveur Web 
+
+Distribution : Debian 
+Version      : 8 Jessie
+
+
+2) Mise à jour des packets :
+	sudo apt-get update
+	sudo apt-get upgrade -y
+
+
+3) Installation de Git :
+	sudo apt-get install git -y
+
+
+4) Installation de Apache2 :
+	sudo apt-get install apache2 -y
+	sudo rm /var/www/html/index.html
+
+
+5) Installation de PHP :
+	sudo apt-get install php5-common libapache2-mod-php5 php5-cli -y
+
+
+6) Installation de MySQL :
+	sudo apt-get install mysql-server php5-mysql -y
+	# New password for the MySQL "root" user : 
+	{erty}
+	# Repeat password for the MySQL "root" user : 
+	{erty}
+
+
+
+9) Apache Virtual Hosts :
+
+	# Création d'un nouveau virtual Host
+	sudo touch /etc/apache2/sites-available/001-betclic_scrapy.conf
+
+	# Edition de ce nouveau virtual host
+	sudo nano /etc/apache2/sites-available/001-betclic_scrapy.conf
+
+	# Ecrire le texte suivant dans le fichier (attention : ne pas utiliser le pavé numérique)
+
+		<VirtualHost *:80>
+       		 ServerAdmin webmaster@localhost
+       		 DocumentRoot /vagrant/betclic-vagrant
+
+      		  <Directory /vagrant/betclic-vagrant/>
+         		Options -Indexes +FollowSymLinks
+         		AllowOverride All
+       		  </Directory>
+
+
+     		   ErrorLog ${APACHE_LOG_DIR}/error.log
+     		   CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+		</VirtualHost>
+
+	# Pour sauvegarder et quitter :
+	# Quitter
+	<Ctrl+X>
+	# Valider la sauvegarde
+	y
+	# Quitter
+	<Entrée>
+	
+
+	# Activation du virtual host
+	sudo a2ensite 001-spieboutique
+
+	# commande de test de la configuration en cas d'erreur  :
+	# /usr/sbin/apache2/apache2ctl configtest
+
+	# Rechargement d'apache
+	sudo service apache2 reload 
+
+
+10) Apache Module Rewrite :
+
+	# Activation du module Apache rewrite qui permet l'utilisation des fichiers .htaccess
+	sudo a2enmod rewrite
+
+	# Redémarrage d'apache
+	sudo service apache2 restart 
+
+
+11) Sécurisation Configuration Apache :
+
+	# Désactivation du virtual host par défaut
+	sudo a2dissite 000-default
+
+	# Modification de la configuration général d'apache 
+	# Suppression de la directive Indexes pour le dossier /var/www (permet de lister les fichiers si il n'y a pas d'index (ce dont on ne veut pas))
+
+	sudo sed -i -e 's/Options Indexes FollowSymLinks/Options FollowSymLinks/' /etc/apache2/apache2.conf	
+
+	# commande de test de la configuration en cas d'erreur  :
+	# /usr/sbin/apache2/apache2ctl configtest
+
+	# Rechargement d'apache
+	sudo service apache2 reload 
+
+
+
+
+sudo apt-get install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+
+
+sudo pip install scrapy
+
+
+
+
+
+
+
+
+
+
+
+8) Gestion des droits :
+
+	# Mettre l'utilisateur spie dans le groupe www-data
+	sudo usermod -g www-data {spie}
+
+	# Changement de l'appartenance du projet à l'utilisateur www-data et au groupe www-data
+	sudo chown -R www-data:www-data /var/www/html/SpieBoutique
+
+	# Ajout des droits d'écriture pour le groupe dans les dossiers uploads/ et resources/
+	sudo chmod -R g+rw /var/www/html/SpieBoutique/uploads /var/www/html/SpieBoutique/resources
+
+

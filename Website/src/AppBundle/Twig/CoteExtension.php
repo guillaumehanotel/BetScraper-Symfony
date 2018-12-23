@@ -16,10 +16,10 @@ class CoteExtension extends \Twig_Extension {
 
 
     public function getFunctions() {
-        return array(
+        return [
             new \Twig_SimpleFunction('calculVar', array($this, 'calculVar')),
             new \Twig_SimpleFunction('formatCote', array($this, 'formatCote')),
-        );
+        ];
     }
 
     public function calculVar($cote, $previous_cote){

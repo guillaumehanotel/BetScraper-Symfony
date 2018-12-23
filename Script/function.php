@@ -470,21 +470,3 @@ function cleanCotesFromMatch($bdd, $match_id, $date_today){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -27,7 +27,7 @@ class DefaultController extends Controller {
 
         //$cotes = $coteRepository->findAll();
         $cotes = $coteRepository->findAllRecentCote();
-        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton'];
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton', 'Tennis', 'Tennis de Table', 'Ski de fond', 'Ski Alpin', 'Formule 1', 'Billard Américain', 'Biathlon'];
 
 
         return $this->render('AppBundle:Default:index.html.twig', [
@@ -61,7 +61,7 @@ class DefaultController extends Controller {
         $cote_var_equipe2 = $cotes[$nb_cotes]->getCoteVarEquipe2();
         $cote_var_nul = $cotes[$nb_cotes]->getCoteVarNul();
 
-        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton'];
+        $sports_without_cote_nul = ['Snooker', 'Basket-ball', 'Volley-ball', 'Football américain', 'Badminton', 'Tennis', 'Tennis de Table', 'Ski de fond', 'Ski Alpin', 'Formule 1', 'Billard Américain', 'Biathlon'];
 
 
         return $this->render('AppBundle:Default:match.html.twig', [
